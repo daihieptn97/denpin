@@ -21,7 +21,6 @@ public class ControlWidget extends AppWidgetProvider {
                          int appWidgetId) {
 
 
-
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.control_widget);
 
         views.setOnClickPendingIntent(R.id.btnWidgetControl, getPendingSelfIntent(context, ACTION_CLICK_CONTROL));
@@ -34,6 +33,7 @@ public class ControlWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
 
+        flashlightProvider = new FlashlightProvider(context);
 
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
@@ -46,11 +46,14 @@ public class ControlWidget extends AppWidgetProvider {
         String action = intent.getAction();
         Log.e(getClass().getSimpleName(), "onReceive:" + action);
 
-        flashlightProvider = new FlashlightProvider(context);
-
         if (action == null) {
             Log.e(getClass().getSimpleName(), "action null");
             return;
+        }
+
+        if (flashlightProvider == null) {
+            Log.e("onReceive", "flashlightProvider null");
+            flashlightProvider = new FlashlightProvider(context);
         }
 
 
