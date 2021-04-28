@@ -12,17 +12,17 @@ import android.widget.RemoteViews;
  * Implementation of App Widget functionality.
  */
 public class ControlWidget extends AppWidgetProvider {
+    private boolean isTurnOnFlashlight = false;
 
     private static final String ACTION_CLICK_CONTROL = "actionClickControl";
+    private FlashlightProvider flashlightProvider;
 
     void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                          int appWidgetId) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.control_widget);
-//        views.setTextViewText(R.id.appwidget_text, widgetText);
 
+
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.control_widget);
 
         views.setOnClickPendingIntent(R.id.btnWidgetControl, getPendingSelfIntent(context, ACTION_CLICK_CONTROL));
 
@@ -33,6 +33,8 @@ public class ControlWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
+
+
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -44,6 +46,8 @@ public class ControlWidget extends AppWidgetProvider {
         String action = intent.getAction();
         Log.e(getClass().getSimpleName(), "onReceive:" + action);
 
+        flashlightProvider = new FlashlightProvider(context);
+
         if (action == null) {
             Log.e(getClass().getSimpleName(), "action null");
             return;
@@ -52,7 +56,13 @@ public class ControlWidget extends AppWidgetProvider {
 
         switch (action) {
             case ACTION_CLICK_CONTROL:
-
+                if (isTurnOnFlashlight) {
+                    flashlightProvider.turnFlashlightOff();
+                    isTurnOnFlashlight = false;
+                } else {
+                    flashlightProvider.turnFlashlightOn();
+                    isTurnOnFlashlight = true;
+                }
                 break;
         }
     }
