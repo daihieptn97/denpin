@@ -12,8 +12,7 @@ import android.widget.RemoteViews;
  * Implementation of App Widget functionality.
  */
 public class ControlWidget extends AppWidgetProvider {
-    private boolean isTurnOnFlashlight = false;
-
+    private static boolean isTurnOnFlashlight = false;
     private static final String ACTION_CLICK_CONTROL = "actionClickControl";
     private FlashlightProvider flashlightProvider;
 
@@ -47,7 +46,7 @@ public class ControlWidget extends AppWidgetProvider {
         Log.e(getClass().getSimpleName(), "onReceive:" + action);
 
         if (action == null) {
-            Log.e(getClass().getSimpleName(), "action null");
+            Log.d(getClass().getSimpleName(), "action null");
             return;
         }
 
@@ -56,15 +55,19 @@ public class ControlWidget extends AppWidgetProvider {
             flashlightProvider = new FlashlightProvider(context);
         }
 
-
         switch (action) {
+
             case ACTION_CLICK_CONTROL:
+
                 if (isTurnOnFlashlight) {
-                    flashlightProvider.turnFlashlightOff();
+//                    flashlightProvider.turnFlashlightOff();
+                    Log.d(ACTION_CLICK_CONTROL, "onReceive: isTurnOnFlashlight true");
                     isTurnOnFlashlight = false;
+
                 } else {
-                    flashlightProvider.turnFlashlightOn();
+//                    flashlightProvider.turnFlashlightOn();
                     isTurnOnFlashlight = true;
+                    Log.d(ACTION_CLICK_CONTROL, "onReceive: isTurnOnFlashlight false");
                 }
                 break;
         }
