@@ -32,7 +32,6 @@ public class ControlWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
 
-        flashlightProvider = new FlashlightProvider(context);
 
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
@@ -60,12 +59,12 @@ public class ControlWidget extends AppWidgetProvider {
             case ACTION_CLICK_CONTROL:
 
                 if (isTurnOnFlashlight) {
-//                    flashlightProvider.turnFlashlightOff();
+                    flashlightProvider.turnFlashlightOff();
                     Log.d(ACTION_CLICK_CONTROL, "onReceive: isTurnOnFlashlight true");
                     isTurnOnFlashlight = false;
 
                 } else {
-//                    flashlightProvider.turnFlashlightOn();
+                    flashlightProvider.turnFlashlightOn();
                     isTurnOnFlashlight = true;
                     Log.d(ACTION_CLICK_CONTROL, "onReceive: isTurnOnFlashlight false");
                 }
